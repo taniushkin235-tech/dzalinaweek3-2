@@ -1,0 +1,1675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>London Club Homework — TO BE (+ / - / ?)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --wine: #5C1E2E;
+    --wine-dark: #431420;
+    --wine-soft: #F6E9EC;
+    --gold: #B8873A;
+    --gold-soft: #FBF4E6;
+    --bg: #F3E8E2;
+    --card: #FDF9F6;
+    --ink: #2B1B1F;
+    --muted: #6E595F;
+    --border: #E6D6CE;
+    --green: #3D6B52;
+    --green-soft: #E9F3ED;
+    --red: #9B2E22;
+    --red-soft: #FBECEB;
+    --radius: 20px;
+    --shadow: 0 12px 32px rgba(92, 30, 46, 0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    line-height: 1.55;
+  }
+
+  /* Top Bar */
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(253, 249, 246, 0.94);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 20px;
+  }
+
+  .topbar-inner {
+    max-width: 920px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .brand-badge {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--wine), var(--gold));
+    color: #fff;
+    display: grid;
+    place-items: center;
+    font-size: 19px;
+    box-shadow: 0 4px 10px rgba(92, 30, 46, 0.2);
+  }
+
+  .brand-title {
+    font-family: 'Lora', serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--wine);
+    line-height: 1.2;
+  }
+
+  .brand-sub {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 600;
+  }
+
+  .progress-dots {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .dot {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    background: #fff;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    padding: 0;
+  }
+
+  .dot.active {
+    width: 28px;
+    border-radius: 99px;
+    background: var(--wine);
+    border-color: var(--wine);
+  }
+
+  .dot.visited {
+    background: var(--gold);
+    border-color: var(--gold);
+  }
+
+  .top-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .slow-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #fff;
+    border: 1.5px solid var(--border);
+    color: var(--ink);
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+
+  .slow-toggle.on {
+    background: var(--gold-soft);
+    border-color: var(--gold);
+    color: var(--wine);
+  }
+
+  .score-pill {
+    background: var(--wine);
+    color: #fff;
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* Main Container */
+  .stage {
+    max-width: 920px;
+    width: 100%;
+    margin: 24px auto 96px;
+    padding: 0 18px;
+    flex: 1;
+  }
+
+  .slide {
+    display: none;
+    animation: fadeUp 0.35s ease;
+  }
+
+  .slide.active {
+    display: block;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    box-shadow: var(--shadow);
+    margin-bottom: 20px;
+  }
+
+  .slide-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gold);
+    background: var(--gold-soft);
+    padding: 5px 12px;
+    border-radius: 999px;
+    margin-bottom: 12px;
+  }
+
+  h1, h2, h3 {
+    font-family: 'Lora', serif;
+    color: var(--wine);
+  }
+
+  h1 { font-size: 28px; margin-bottom: 8px; }
+  h2 { font-size: 21px; margin-bottom: 10px; }
+  h3 { font-size: 17px; margin-bottom: 8px; }
+
+  .lead {
+    color: var(--muted);
+    font-size: 15px;
+    margin-bottom: 20px;
+  }
+
+  /* Audio Chips & Buttons */
+  .word-bank {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 22px;
+    padding: 14px;
+    background: #fff;
+    border: 1px dashed var(--gold);
+    border-radius: 14px;
+  }
+
+  .word-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--wine-soft);
+    color: var(--wine);
+    border: 1px solid transparent;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+
+  .word-chip:hover {
+    background: var(--wine);
+    color: #fff;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: none;
+    border-radius: 12px;
+    padding: 11px 18px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+
+  .btn-primary {
+    background: var(--wine);
+    color: #fff;
+  }
+
+  .btn-primary:hover { background: var(--wine-dark); transform: translateY(-1px); }
+
+  .btn-gold {
+    background: var(--gold);
+    color: #fff;
+  }
+
+  .btn-gold:hover { filter: brightness(0.95); }
+
+  .btn-outline {
+    background: #fff;
+    color: var(--wine);
+    border: 1.5px solid var(--border);
+  }
+
+  .btn-outline:hover { border-color: var(--wine); background: var(--wine-soft); }
+
+  .btn-sm {
+    padding: 7px 12px;
+    font-size: 13px;
+    border-radius: 10px;
+  }
+
+  .audio-btn {
+    background: var(--gold-soft);
+    color: var(--wine);
+    border: 1px solid #E5CFA7;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: 0.2s;
+  }
+
+  .audio-btn:hover { background: var(--gold); color: #fff; }
+
+  /* Slide 1: Matching */
+  .match-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.6fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  @media (max-width: 680px) {
+    .match-grid { grid-template-columns: 1fr; }
+  }
+
+  .match-col {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .match-item {
+    background: #fff;
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    padding: 12px 15px;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: left;
+    cursor: pointer;
+    transition: 0.2s;
+    color: var(--ink);
+  }
+
+  .match-item:hover:not(.matched) { border-color: var(--gold); background: var(--gold-soft); }
+  .match-item.selected { border-color: var(--wine); background: var(--wine-soft); color: var(--wine); }
+  .match-item.matched { border-color: var(--green); background: var(--green-soft); color: var(--green); cursor: default; }
+  .match-item.wrong { border-color: var(--red); background: var(--red-soft); color: var(--red); animation: shake 0.3s; }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+  }
+
+  /* Choice Questions */
+  .q-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .q-card {
+    background: #fff;
+    border: 1.5px solid var(--border);
+    border-radius: 16px;
+    padding: 16px 18px;
+  }
+
+  .q-text {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .options-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .opt-btn {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 8px 15px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ink);
+    cursor: pointer;
+    transition: 0.2s;
+  }
+
+  .opt-btn:hover:not(:disabled) { border-color: var(--gold); background: var(--gold-soft); }
+  .opt-btn.correct { background: var(--green-soft); border-color: var(--green); color: var(--green); }
+  .opt-btn.wrong { background: var(--red-soft); border-color: var(--red); color: var(--red); }
+
+  .feedback-line {
+    margin-top: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    min-height: 19px;
+  }
+
+  .fb-ok { color: var(--green); }
+  .fb-err { color: var(--red); }
+
+  /* Slide 3: Fix the Robot */
+  .robot-banner {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    background: linear-gradient(135deg, var(--wine-soft), var(--gold-soft));
+    border: 1.5px solid #E5CFA7;
+    border-radius: 16px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+  }
+
+  .robot-icon {
+    width: 64px;
+    height: 64px;
+    flex-shrink: 0;
+    background: #fff;
+    border-radius: 16px;
+    display: grid;
+    place-items: center;
+    border: 2px solid var(--gold);
+  }
+
+  .fix-row {
+    background: #fff;
+    border: 1.5px solid var(--border);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 14px;
+  }
+
+  .bug-sentence {
+    display: inline-block;
+    background: var(--red-soft);
+    color: var(--red);
+    padding: 4px 11px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 15px;
+    margin-bottom: 10px;
+    text-decoration: line-through;
+    text-decoration-thickness: 1.5px;
+  }
+
+  .input-group {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .text-input {
+    flex: 1;
+    min-width: 220px;
+    padding: 11px 14px;
+    border-radius: 11px;
+    border: 1.5px solid var(--border);
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+    background: var(--card);
+    outline: none;
+    transition: 0.2s;
+  }
+
+  .text-input:focus { border-color: var(--wine); background: #fff; }
+  .text-input.ok { border-color: var(--green); background: var(--green-soft); color: var(--green); }
+  .text-input.err { border-color: var(--red); background: var(--red-soft); }
+
+  /* Slide 4: Ticking & Sentence Builder */
+  .tick-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #fff;
+    border: 1.5px solid var(--border);
+    border-radius: 13px;
+    padding: 12px 15px;
+    cursor: pointer;
+    transition: 0.2s;
+    font-weight: 600;
+    font-size: 15px;
+  }
+
+  .tick-item:hover { border-color: var(--gold); }
+  .tick-item.checked { border-color: var(--wine); background: var(--wine-soft); }
+  .tick-item.correct-res { border-color: var(--green); background: var(--green-soft); color: var(--green); }
+  .tick-item.wrong-res { border-color: var(--red); background: var(--red-soft); color: var(--red); }
+
+  .tick-box {
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    border: 2px solid var(--border);
+    display: grid;
+    place-items: center;
+    font-size: 14px;
+    background: #fff;
+    flex-shrink: 0;
+  }
+
+  .tick-item.checked .tick-box {
+    background: var(--wine);
+    border-color: var(--wine);
+    color: #fff;
+  }
+
+  .builder-box {
+    background: #fff;
+    border: 1.5px solid var(--border);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 14px;
+  }
+
+  .answer-zone {
+    min-height: 48px;
+    padding: 8px 12px;
+    background: var(--card);
+    border: 2px dashed var(--border);
+    border-radius: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+
+  .tile-pool {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .tile {
+    background: var(--wine-soft);
+    color: var(--wine);
+    border: 1.5px solid #DFC4CB;
+    border-radius: 10px;
+    padding: 7px 13px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.15s;
+  }
+
+  .tile:hover { background: var(--wine); color: #fff; }
+  .tile.used { opacity: 0.3; pointer-events: none; }
+  .tile.placed { background: var(--gold-soft); border-color: var(--gold); color: var(--ink); }
+
+  /* Slide 5: Listening & Reading */
+  .story-box {
+    background: #fff;
+    border: 1.5px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 18px;
+  }
+
+  .audio-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 14px;
+  }
+
+  .transcript-panel {
+    display: none;
+    background: var(--card);
+    border-left: 4px solid var(--gold);
+    border-radius: 10px;
+    padding: 16px;
+    font-size: 16px;
+    line-height: 1.75;
+    color: var(--ink);
+  }
+
+  .transcript-panel.open { display: block; }
+
+  .tf-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    background: #fff;
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    padding: 13px 16px;
+  }
+
+  /* Slide 6: Speaking Profile Card */
+  .profile-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px;
+    margin-bottom: 22px;
+  }
+
+  .field-box label {
+    display: block;
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--wine);
+    margin-bottom: 5px;
+  }
+
+  .field-box input {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 11px;
+    border: 1.5px solid var(--border);
+    background: #fff;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .field-box input:focus { outline: none; border-color: var(--gold); }
+
+  .prompts-box {
+    background: linear-gradient(135deg, #fff, var(--gold-soft));
+    border: 1.5px solid #E5CFA7;
+    border-radius: 16px;
+    padding: 18px 20px;
+    margin-bottom: 20px;
+  }
+
+  .prompt-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    margin-top: 10px;
+  }
+
+  .prompt-list li {
+    font-size: 15px;
+    font-weight: 600;
+    padding: 8px 12px;
+    background: rgba(255,255,255,0.8);
+    border-radius: 10px;
+    border-left: 3px solid var(--wine);
+  }
+
+  .mood-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 14px 0 20px;
+  }
+
+  .mood-btn {
+    background: #fff;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 10px 16px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+
+  .mood-btn.selected {
+    background: var(--wine);
+    color: #fff;
+    border-color: var(--wine);
+  }
+
+  .complete-banner {
+    display: none;
+    margin-top: 18px;
+    background: var(--green-soft);
+    border: 2px solid var(--green);
+    color: var(--green);
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .complete-banner.show { display: block; animation: fadeUp 0.4s ease; }
+
+  /* Bottom Navigation */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(253, 249, 246, 0.96);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid var(--border);
+    padding: 12px 20px;
+    z-index: 40;
+  }
+
+  .bottom-nav-inner {
+    max-width: 920px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .slide-counter {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--muted);
+  }
+
+  /* Confetti Canvas */
+  #confettiCanvas {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 100;
+  }
+</style>
+</head>
+<body>
+
+<canvas id="confettiCanvas"></canvas>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <div class="brand-badge">🇬🇧</div>
+      <div>
+        <div class="brand-title">London Club Homework</div>
+        <div class="brand-sub">Alina &bull; TO BE (+ / &ndash; / ?) &amp; 10 Club Words</div>
+      </div>
+    </div>
+
+    <div class="progress-dots" id="progressDots" aria-label="Slide navigation"></div>
+
+    <div class="top-right">
+      <button class="slow-toggle" id="slowToggle" onclick="toggleSlowMode()">🐢 Slow: OFF</button>
+      <div class="score-pill">⭐ <span id="scoreVal">0</span> pts</div>
+    </div>
+  </div>
+</header>
+
+<main class="stage">
+
+  <!-- ==================== SLIDE 1: VOCABULARY MATCH & CHOICE ==================== -->
+  <section class="slide active" data-slide="0">
+    <div class="card">
+      <div class="slide-eyebrow">Slide 1 of 6 &bull; New Words</div>
+      <h1>Task 1. Club Word Match</h1>
+      <p class="lead">Tap any word below to listen. Then match the 6 words on the left with the right meaning on the right.</p>
+
+      <div class="word-bank" id="wordBank"></div>
+
+      <div class="match-grid">
+        <div class="match-col" id="matchWords"></div>
+        <div class="match-col" id="matchDefs"></div>
+      </div>
+      <div class="feedback-line" id="matchFeedback"></div>
+    </div>
+
+    <div class="card">
+      <h2>Bonus: Pick the Right Word</h2>
+      <p class="lead">Choose the best word for the other 4 club words.</p>
+      <div class="q-list" id="vocabBonusList"></div>
+    </div>
+  </section>
+
+  <!-- ==================== SLIDE 2: CHOOSE THE RIGHT FORM ==================== -->
+  <section class="slide" data-slide="1">
+    <div class="card">
+      <div class="slide-eyebrow">Slide 2 of 6 &bull; Grammar Choice</div>
+      <h1>Task 2. Choose the Right Form of TO BE</h1>
+      <p class="lead">Click the correct option to complete each sentence. Listen to the sentence after you answer!</p>
+      <div class="q-list" id="grammarChoiceList"></div>
+    </div>
+  </section>
+
+  <!-- ==================== SLIDE 3: FIX THE ROBOT (TYPING) ==================== -->
+  <section class="slide" data-slide="2">
+    <div class="card">
+      <div class="slide-eyebrow">Slide 3 of 6 &bull; Typing Challenge</div>
+      <h1>Task 3. Fix the London Club Robot!</h1>
+
+      <div class="robot-banner">
+        <div class="robot-icon">
+          <svg width="44" height="44" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <line x1="32" y1="6" x2="32" y2="16" stroke="#B8873A" stroke-width="4" stroke-linecap="round"/>
+            <circle cx="32" cy="6" r="4" fill="#9B2E22"/>
+            <rect x="14" y="16" width="36" height="28" rx="10" fill="#5C1E2E"/>
+            <circle cx="25" cy="29" r="5" fill="#FDF9F6"/>
+            <circle cx="39" cy="29" r="5" fill="#FDF9F6"/>
+            <circle cx="26" cy="29" r="2.2" fill="#2B1B1F"/>
+            <circle cx="40" cy="29" r="2.2" fill="#2B1B1F"/>
+            <path d="M26 37 Q32 34 38 37" stroke="#B8873A" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+            <rect x="20" y="46" width="24" height="12" rx="5" fill="#B8873A"/>
+          </svg>
+        </div>
+        <div>
+          <h3>Beep-boop! Help me fix my sentences!</h3>
+          <p style="font-size:14px; color:var(--muted);">Type the correct sentence. You can use short forms (<em>I'm not, isn't, aren't</em>) or full forms (<em>I am not, is not, are not</em>).</p>
+        </div>
+      </div>
+
+      <div id="robotList"></div>
+    </div>
+  </section>
+
+  <!-- ==================== SLIDE 4: TICKING & SENTENCE BUILDER ==================== -->
+  <section class="slide" data-slide="3">
+    <div class="card">
+      <div class="slide-eyebrow">Slide 4 of 6 &bull; Grammar Detective</div>
+      <h1>Task 4A. Tick the Correct Sentences</h1>
+      <p class="lead">Only <strong>3 sentences</strong> are completely correct. Tick them and click <strong>Check My Ticks</strong>!</p>
+
+      <div class="q-list" id="tickList" style="margin-bottom:14px;"></div>
+      <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+        <button class="btn btn-primary" onclick="checkTicks()">Check My Ticks</button>
+        <button class="btn btn-outline btn-sm" onclick="resetTicks()">Reset</button>
+      </div>
+      <div class="feedback-line" id="tickFeedback"></div>
+    </div>
+
+    <div class="card">
+      <h2>Task 4B. Build the Sentences</h2>
+      <p class="lead">Tap the word tiles in the right order to make questions and negatives.</p>
+      <div id="builderList"></div>
+    </div>
+  </section>
+
+  <!-- ==================== SLIDE 5: LISTENING & READING (MEET SOFIA) ==================== -->
+  <section class="slide" data-slide="4">
+    <div class="card">
+      <div class="slide-eyebrow">Slide 5 of 6 &bull; Listen &amp; Read</div>
+      <h1>Task 5. Meet Sofia at the Club</h1>
+      <p class="lead">Listen to Sofia's short story first. Then open the text if you need help, and answer True or False.</p>
+
+      <div class="story-box">
+        <div class="audio-controls">
+          <button class="btn btn-primary" onclick="speakText(SOFIA_STORY)">🔊 Play Story</button>
+          <button class="btn btn-outline" onclick="stopSpeech()">⏹ Stop</button>
+          <button class="btn btn-gold" id="toggleStoryBtn" onclick="toggleStoryTranscript()">👁 Show transcript</button>
+        </div>
+
+        <div class="transcript-panel" id="storyTranscript">
+          Hi! My name is Sofia, and I'm eleven years old. I'm a new student at the London Youth Club. My hometown isn't London. It's Madrid, in Spain! I'm a little nervous today, but I'm very curious too. My neighbour Emma is super polite and friendly. Are we classmates at school? No, we aren't, but we are friends at the club. My mum is an architect, and my brother is a musician!
+        </div>
+      </div>
+
+      <h3>True or False?</h3>
+      <div class="q-list" id="tfList" style="margin-top:12px;"></div>
+    </div>
+  </section>
+
+  <!-- ==================== SLIDE 6: MY PROFILE, SPEAKING & FINISH ==================== -->
+  <section class="slide" data-slide="5">
+    <div class="card">
+      <div class="slide-eyebrow">Slide 6 of 6 &bull; Speaking &amp; Finish</div>
+      <h1>Task 6. My London Club Profile</h1>
+      <p class="lead">Write short keywords about you in the card below. Then use the Speaking Prompts to say 5 sentences aloud!</p>
+
+      <div class="profile-grid">
+        <div class="field-box">
+          <label for="fName">My Name</label>
+          <input id="fName" type="text" placeholder="e.g. Alina" />
+        </div>
+        <div class="field-box">
+          <label for="fAge">My Age</label>
+          <input id="fAge" type="text" placeholder="e.g. 11" />
+        </div>
+        <div class="field-box">
+          <label for="fCity">My Hometown</label>
+          <input id="fCity" type="text" placeholder="e.g. Irkutsk" />
+        </div>
+        <div class="field-box">
+          <label for="fWords">2 Words About Me</label>
+          <input id="fWords" type="text" placeholder="e.g. creative, curious" />
+        </div>
+        <div class="field-box">
+          <label for="fNotToday">Today I'm NOT...</label>
+          <input id="fNotToday" type="text" placeholder="e.g. nervous / tired" />
+        </div>
+        <div class="field-box">
+          <label for="fFriend">My Classmate (Name + 1 Word)</label>
+          <input id="fFriend" type="text" placeholder="e.g. Kate, polite" />
+        </div>
+      </div>
+
+      <div class="prompts-box">
+        <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;">
+          <h3>🎙️ Speaking Prompts (Say It Aloud!)</h3>
+          <button class="audio-btn" onclick="speakText('Hi! My name is Alina, and I am eleven years old. My hometown is nice and cozy. I am a student. I am creative and curious. Today I am not nervous. My classmate is very polite!')">🔊 Hear example</button>
+        </div>
+        <ul class="prompt-list">
+          <li>1. Hi! My name is ..., and I'm ... years old.</li>
+          <li>2. My hometown is ... . It is ... (big / cozy / cool).</li>
+          <li>3. I'm a student. I'm ... and ... .</li>
+          <li>4. Today I'm not ... .</li>
+          <li>5. My classmate is ... . He / She is very ... .</li>
+        </ul>
+        <p style="margin-top:12px; font-size:13px; color:var(--wine); font-weight:700;">
+          💡 Voice Bonus: Record a short voice message with your 5 sentences and send it to your teacher!
+        </p>
+      </div>
+
+      <h3>How was this homework?</h3>
+      <div class="mood-row" id="moodRow">
+        <button class="mood-btn" onclick="selectMood(this, 'Super easy!')">😎 Super easy!</button>
+        <button class="mood-btn" onclick="selectMood(this, 'Good and fun!')">😊 Good and fun!</button>
+        <button class="mood-btn" onclick="selectMood(this, 'A bit tricky')">🤔 A bit tricky</button>
+      </div>
+
+      <button class="btn btn-primary" style="width:100%; padding:15px; font-size:16px;" onclick="finishHomework()">
+        🎉 Homework Complete!
+      </button>
+
+      <div class="complete-banner" id="completeBanner">
+        <h2 style="color:var(--green); margin-bottom:6px;">Amazing job, Alina! 🌟</h2>
+        <p style="font-size:15px; font-weight:600;">You finished all 6 slides and earned <strong id="finalScoreText">0</strong> points!</p>
+        <p id="sendStatus" style="font-size:14px; font-weight:700; margin-top:8px;"></p>
+        <p style="font-size:13px; margin-top:6px;">Don't forget to send your short voice message for Task 6.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<nav class="bottom-nav">
+  <div class="bottom-nav-inner">
+    <button class="btn btn-outline" id="prevBtn" onclick="changeSlide(-1)">← Previous</button>
+    <div class="slide-counter" id="slideCounter">Slide 1 of 6</div>
+    <button class="btn btn-primary" id="nextBtn" onclick="changeSlide(1)">Next →</button>
+  </div>
+</nav>
+
+<script>
+  // ==================== STATE & SPEECH ====================
+  let currentSlide = 0;
+  const totalSlides = 6;
+  let score = 0;
+  let slowMode = false;
+  const visitedSlides = new Set([0]);
+  const awardedKeys = new Set();
+
+  function addPoints(key, pts) {
+    if (awardedKeys.has(key)) return;
+    awardedKeys.add(key);
+    score += pts;
+    document.getElementById('scoreVal').textContent = score;
+  }
+
+  function toggleSlowMode() {
+    slowMode = !slowMode;
+    const btn = document.getElementById('slowToggle');
+    btn.classList.toggle('on', slowMode);
+    btn.textContent = slowMode ? '🐢 Slow: ON' : '🐢 Slow: OFF';
+  }
+
+  function speakText(text) {
+    if (!('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = 'en-GB';
+    utter.rate = slowMode ? 0.72 : 0.96;
+    window.speechSynthesis.speak(utter);
+  }
+
+  function stopSpeech() {
+    if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+  }
+
+  // ==================== NAVIGATION ====================
+  function initDots() {
+    const container = document.getElementById('progressDots');
+    container.innerHTML = '';
+    for (let i = 0; i < totalSlides; i++) {
+      const btn = document.createElement('button');
+      btn.className = 'dot' + (i === 0 ? ' active' : '');
+      btn.title = 'Slide ' + (i + 1);
+      btn.onclick = () => goToSlide(i);
+      container.appendChild(btn);
+    }
+  }
+
+  function goToSlide(idx) {
+    if (idx < 0 || idx >= totalSlides) return;
+    stopSpeech();
+    document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+    document.querySelector(`.slide[data-slide="${idx}"]`).classList.add('active');
+    currentSlide = idx;
+    visitedSlides.add(idx);
+
+    const dots = document.querySelectorAll('.dot');
+    dots.forEach((d, i) => {
+      d.classList.remove('active', 'visited');
+      if (i === idx) d.classList.add('active');
+      else if (visitedSlides.has(i)) d.classList.add('visited');
+    });
+
+    document.getElementById('slideCounter').textContent = `Slide ${idx + 1} of ${totalSlides}`;
+    document.getElementById('prevBtn').disabled = idx === 0;
+    document.getElementById('prevBtn').style.opacity = idx === 0 ? '0.45' : '1';
+    document.getElementById('nextBtn').textContent = idx === totalSlides - 1 ? 'Finish 🎉' : 'Next →';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function changeSlide(delta) {
+    if (currentSlide === totalSlides - 1 && delta === 1) {
+      finishHomework();
+      return;
+    }
+    goToSlide(currentSlide + delta);
+  }
+
+  // ==================== SLIDE 1: VOCABULARY ====================
+  const ALL_WORDS = [
+    'curious', 'confident', 'creative', 'nervous', 'polite',
+    'neighbour', 'classmate', 'architect', 'musician', 'hometown'
+  ];
+
+  const MATCH_PAIRS = [
+    { id: 'musician', word: '🎵 musician', def: 'A person who plays music or sings.' },
+    { id: 'classmate', word: '🎒 classmate', def: 'A kid in your class at school.' },
+    { id: 'hometown', word: '🏙️ hometown', def: 'The city or town where you are from.' },
+    { id: 'creative', word: '🎨 creative', def: 'Good at art, drawing, or new ideas.' },
+    { id: 'polite', word: '🤝 polite', def: 'Always says "please" and "thank you".' },
+    { id: 'curious', word: '🔍 curious', def: 'Wants to ask questions and learn new things.' }
+  ];
+
+  let selectedWordId = null;
+  let matchedCount = 0;
+
+  function initSlide1() {
+    const bank = document.getElementById('wordBank');
+    ALL_WORDS.forEach(w => {
+      const b = document.createElement('button');
+      b.className = 'word-chip';
+      b.textContent = '🔊 ' + w;
+      b.onclick = () => speakText(w);
+      bank.appendChild(b);
+    });
+
+    const wordsCol = document.getElementById('matchWords');
+    const defsCol = document.getElementById('matchDefs');
+    const shuffledDefs = [...MATCH_PAIRS].sort(() => Math.random() - 0.5);
+
+    MATCH_PAIRS.forEach(item => {
+      const btn = document.createElement('button');
+      btn.className = 'match-item';
+      btn.dataset.id = item.id;
+      btn.textContent = item.word;
+      btn.onclick = () => selectMatchWord(btn, item.id);
+      wordsCol.appendChild(btn);
+    });
+
+    shuffledDefs.forEach(item => {
+      const btn = document.createElement('button');
+      btn.className = 'match-item';
+      btn.dataset.id = item.id;
+      btn.textContent = item.def;
+      btn.onclick = () => selectMatchDef(btn, item.id);
+      defsCol.appendChild(btn);
+    });
+
+    const bonusData = [
+      {
+        q: '1. A person who designs houses and buildings is an ____.',
+        opts: ['architect', 'musician', 'classmate'],
+        ans: 'architect',
+        full: 'A person who designs houses and buildings is an architect.'
+      },
+      {
+        q: '2. A person who lives next door to you is your ____.',
+        opts: ['hometown', 'neighbour', 'polite'],
+        ans: 'neighbour',
+        full: 'A person who lives next door to you is your neighbour.'
+      },
+      {
+        q: '3. Before a big test, I feel a little ____.',
+        opts: ['nervous', 'architect', 'neighbour'],
+        ans: 'nervous',
+        full: 'Before a big test, I feel a little nervous.'
+      },
+      {
+        q: '4. Leo is not shy at all. He is very ____!',
+        opts: ['nervous', 'confident', 'hometown'],
+        ans: 'confident',
+        full: 'Leo is not shy at all. He is very confident!'
+      }
+    ];
+
+    renderChoiceList('vocabBonusList', bonusData, 'vbonus');
+  }
+
+  function selectMatchWord(btn, id) {
+    if (btn.classList.contains('matched')) return;
+    document.querySelectorAll('#matchWords .match-item').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    selectedWordId = id;
+    speakText(id);
+  }
+
+  function selectMatchDef(btn, id) {
+    if (btn.classList.contains('matched') || !selectedWordId) return;
+    const wordBtn = document.querySelector(`#matchWords .match-item[data-id="${selectedWordId}"]`);
+    const fb = document.getElementById('matchFeedback');
+
+    if (selectedWordId === id) {
+      wordBtn.classList.remove('selected');
+      wordBtn.classList.add('matched');
+      btn.classList.add('matched');
+      selectedWordId = null;
+      matchedCount++;
+      addPoints('match_' + id, 10);
+      fb.className = 'feedback-line fb-ok';
+      fb.textContent = matchedCount === MATCH_PAIRS.length
+        ? '🎉 Brilliant! All 6 words matched!'
+        : `✅ Nice match! (${matchedCount}/${MATCH_PAIRS.length})`;
+    } else {
+      btn.classList.add('wrong');
+      fb.className = 'feedback-line fb-err';
+      fb.textContent = 'Not quite! Try another meaning.';
+      setTimeout(() => btn.classList.remove('wrong'), 450);
+    }
+  }
+
+  // ==================== REUSABLE CHOICE RENDERER ====================
+  function renderChoiceList(containerId, items, prefix) {
+    const container = document.getElementById(containerId);
+    items.forEach((item, idx) => {
+      const card = document.createElement('div');
+      card.className = 'q-card';
+
+      const qRow = document.createElement('div');
+      qRow.className = 'q-text';
+      qRow.innerHTML = `<span>${item.q}</span>`;
+
+      const listenBtn = document.createElement('button');
+      listenBtn.className = 'audio-btn';
+      listenBtn.textContent = '🔊 Listen';
+      listenBtn.onclick = () => speakText(item.full);
+      qRow.appendChild(listenBtn);
+
+      const optsRow = document.createElement('div');
+      optsRow.className = 'options-row';
+
+      const fb = document.createElement('div');
+      fb.className = 'feedback-line';
+
+      item.opts.forEach(opt => {
+        const b = document.createElement('button');
+        b.className = 'opt-btn';
+        b.textContent = opt;
+        b.onclick = () => {
+          if (opt === item.ans) {
+            optsRow.querySelectorAll('.opt-btn').forEach(x => {
+              x.disabled = true;
+              x.classList.remove('wrong');
+            });
+            b.classList.add('correct');
+            fb.className = 'feedback-line fb-ok';
+            fb.textContent = '✅ Correct! ' + item.full;
+            addPoints(`${prefix}_${idx}`, 10);
+          } else {
+            b.classList.add('wrong');
+            fb.className = 'feedback-line fb-err';
+            fb.textContent = 'Try again!';
+          }
+        };
+        optsRow.appendChild(b);
+      });
+
+      card.appendChild(qRow);
+      card.appendChild(optsRow);
+      card.appendChild(fb);
+      container.appendChild(card);
+    });
+  }
+
+  // ==================== SLIDE 2: GRAMMAR CHOICE ====================
+  function initSlide2() {
+    const grammarData = [
+      {
+        q: '1. I ____ eleven years old, and I am a student.',
+        opts: ['am', 'is', 'are'],
+        ans: 'am',
+        full: 'I am eleven years old, and I am a student.'
+      },
+      {
+        q: '2. Marco ____ from London. He is from Italy!',
+        opts: ["isn't", "aren't", "am not"],
+        ans: "isn't",
+        full: "Marco isn't from London. He is from Italy!"
+      },
+      {
+        q: '3. Emma and Leo ____ at the London Youth Club.',
+        opts: ['am', 'is', 'are'],
+        ans: 'are',
+        full: 'Emma and Leo are at the London Youth Club.'
+      },
+      {
+        q: '4. ____ you nervous today? — No, I am not.',
+        opts: ['Is', 'Are', 'Am'],
+        ans: 'Are',
+        full: 'Are you nervous today? No, I am not.'
+      },
+      {
+        q: '5. My neighbour ____ an architect.',
+        opts: ['am', 'is', 'are'],
+        ans: 'is',
+        full: 'My neighbour is an architect.'
+      },
+      {
+        q: '6. Are his parents in London? — Yes, they ____.',
+        opts: ['is', 'are', "aren't"],
+        ans: 'are',
+        full: 'Are his parents in London? Yes, they are.'
+      }
+    ];
+    renderChoiceList('grammarChoiceList', grammarData, 'gram');
+  }
+
+  // ==================== SLIDE 3: FIX THE ROBOT ====================
+  const ROBOT_ITEMS = [
+    {
+      bug: 'I not am tired today.',
+      hint: 'Put "am" before "not".',
+      answers: ["i am not tired today", "i'm not tired today"],
+      display: "I'm not tired today."
+    },
+    {
+      bug: 'She is a musician?',
+      hint: 'Move "Is" to the start of the question.',
+      answers: ['is she a musician'],
+      display: 'Is she a musician?'
+    },
+    {
+      bug: "We isn't late for the club.",
+      hint: 'With "We", use "aren\'t" or "are not".',
+      answers: ["we aren't late for the club", "we are not late for the club"],
+      display: "We aren't late for the club."
+    },
+    {
+      bug: 'You are confident?',
+      hint: 'Start the question with "Are".',
+      answers: ['are you confident'],
+      display: 'Are you confident?'
+    },
+    {
+      bug: 'He are my neighbour.',
+      hint: 'With "He", use "is".',
+      answers: ['he is my neighbour', "he's my neighbour", 'he is my neighbor', "he's my neighbor"],
+      display: 'He is my neighbour.'
+    }
+  ];
+
+  function normalizeText(str) {
+    return str
+      .toLowerCase()
+      .replace(/[’`]/g, "'")
+      .replace(/[.?!,]/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  function initSlide3() {
+    const list = document.getElementById('robotList');
+    ROBOT_ITEMS.forEach((item, idx) => {
+      const box = document.createElement('div');
+      box.className = 'fix-row';
+      box.innerHTML = `
+        <div style="margin-bottom:6px; font-size:13px; font-weight:700; color:var(--muted);">Bug #${idx + 1}</div>
+        <div class="bug-sentence">${item.bug}</div>
+        <div class="input-group">
+          <input type="text" class="text-input" id="robotIn_${idx}" placeholder="Type the correct sentence..." />
+          <button class="btn btn-primary btn-sm" onclick="checkRobot(${idx})">Check</button>
+          <button class="btn btn-outline btn-sm" onclick="showRobotHint(${idx})">Hint</button>
+        </div>
+        <div class="feedback-line" id="robotFb_${idx}"></div>
+      `;
+      list.appendChild(box);
+    });
+  }
+
+  function checkRobot(idx) {
+    const item = ROBOT_ITEMS[idx];
+    const input = document.getElementById(`robotIn_${idx}`);
+    const fb = document.getElementById(`robotFb_${idx}`);
+    const val = normalizeText(input.value);
+
+    if (!val) {
+      fb.className = 'feedback-line fb-err';
+      fb.textContent = 'Type your sentence first!';
+      return;
+    }
+
+    if (item.answers.includes(val)) {
+      input.classList.remove('err');
+      input.classList.add('ok');
+      fb.className = 'feedback-line fb-ok';
+      fb.textContent = `✅ Robot fixed! "${item.display}"`;
+      addPoints('robot_' + idx, 15);
+      speakText(item.display);
+    } else {
+      input.classList.remove('ok');
+      input.classList.add('err');
+      fb.className = 'feedback-line fb-err';
+      fb.textContent = 'Not quite yet. Check the word order or form of TO BE!';
+    }
+  }
+
+  function showRobotHint(idx) {
+    const fb = document.getElementById(`robotFb_${idx}`);
+    fb.className = 'feedback-line';
+    fb.style.color = 'var(--gold)';
+    fb.textContent = '💡 Hint: ' + ROBOT_ITEMS[idx].hint;
+  }
+
+  // ==================== SLIDE 4: TICKING & BUILDER ====================
+  const TICK_ITEMS = [
+    { text: 'Are you curious about London?', correct: true },
+    { text: 'My classmate are very polite.', correct: false },
+    { text: "I'm not nervous today.", correct: true },
+    { text: 'Is they creative students?', correct: false },
+    { text: 'Is your hometown big?', correct: true }
+  ];
+
+  const BUILDER_ITEMS = [
+    {
+      prompt: 'Make a question:',
+      tiles: ['polite?', 'Is', 'classmate', 'your'],
+      answer: 'Is your classmate polite?'
+    },
+    {
+      prompt: 'Make a negative sentence:',
+      tiles: ['big.', 'hometown', 'very', "isn't", 'My'],
+      answer: "My hometown isn't very big."
+    },
+    {
+      prompt: 'Make a question:',
+      tiles: ['London?', 'about', 'you', 'curious', 'Are'],
+      answer: 'Are you curious about London?'
+    }
+  ];
+
+  const builderState = BUILDER_ITEMS.map(() => []);
+
+  function initSlide4() {
+    const tickList = document.getElementById('tickList');
+    TICK_ITEMS.forEach((item, idx) => {
+      const div = document.createElement('div');
+      div.className = 'tick-item';
+      div.id = `tickItem_${idx}`;
+      div.onclick = () => {
+        div.classList.remove('correct-res', 'wrong-res');
+        div.classList.toggle('checked');
+        div.querySelector('.tick-box').textContent = div.classList.contains('checked') ? '✓' : '';
+      };
+      div.innerHTML = `<div class="tick-box"></div><span>${item.text}</span>`;
+      tickList.appendChild(div);
+    });
+
+    const builderList = document.getElementById('builderList');
+    BUILDER_ITEMS.forEach((item, idx) => {
+      const box = document.createElement('div');
+      box.className = 'builder-box';
+      box.innerHTML = `
+        <div style="font-size:13px; font-weight:800; color:var(--wine); margin-bottom:8px;">${idx + 1}. ${item.prompt}</div>
+        <div class="answer-zone" id="bZone_${idx}"><span style="color:var(--muted); font-size:13px;">Tap words below...</span></div>
+        <div class="tile-pool" id="bPool_${idx}"></div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <button class="btn btn-primary btn-sm" onclick="checkBuilder(${idx})">Check</button>
+          <button class="btn btn-outline btn-sm" onclick="resetBuilder(${idx})">Clear</button>
+        </div>
+        <div class="feedback-line" id="bFb_${idx}"></div>
+      `;
+      builderList.appendChild(box);
+      renderBuilderPool(idx);
+    });
+  }
+
+  function checkTicks() {
+    let allGood = true;
+    TICK_ITEMS.forEach((item, idx) => {
+      const el = document.getElementById(`tickItem_${idx}`);
+      const isChecked = el.classList.contains('checked');
+      el.classList.remove('correct-res', 'wrong-res');
+      if (isChecked === item.correct) {
+        if (isChecked) el.classList.add('correct-res');
+      } else {
+        el.classList.add('wrong-res');
+        allGood = false;
+      }
+    });
+    const fb = document.getElementById('tickFeedback');
+    if (allGood) {
+      fb.className = 'feedback-line fb-ok';
+      fb.textContent = '🎉 Spot on! You found all 3 correct sentences!';
+      addPoints('ticks_all', 20);
+    } else {
+      fb.className = 'feedback-line fb-err';
+      fb.textContent = 'Check the red ones and try again! Remember: 3 sentences are correct.';
+    }
+  }
+
+  function resetTicks() {
+    TICK_ITEMS.forEach((_, idx) => {
+      const el = document.getElementById(`tickItem_${idx}`);
+      el.classList.remove('checked', 'correct-res', 'wrong-res');
+      el.querySelector('.tick-box').textContent = '';
+    });
+    document.getElementById('tickFeedback').textContent = '';
+  }
+
+  function renderBuilderPool(idx) {
+    const pool = document.getElementById(`bPool_${idx}`);
+    const zone = document.getElementById(`bZone_${idx}`);
+    const chosen = builderState[idx];
+
+    zone.innerHTML = '';
+    if (chosen.length === 0) {
+      zone.innerHTML = '<span style="color:var(--muted); font-size:13px;">Tap words below...</span>';
+    } else {
+      chosen.forEach((tileIdx, pos) => {
+        const t = document.createElement('button');
+        t.className = 'tile placed';
+        t.textContent = BUILDER_ITEMS[idx].tiles[tileIdx];
+        t.onclick = () => {
+          builderState[idx].splice(pos, 1);
+          renderBuilderPool(idx);
+        };
+        zone.appendChild(t);
+      });
+    }
+
+    pool.innerHTML = '';
+    BUILDER_ITEMS[idx].tiles.forEach((word, tIdx) => {
+      const t = document.createElement('button');
+      t.className = 'tile' + (chosen.includes(tIdx) ? ' used' : '');
+      t.textContent = word;
+      t.onclick = () => {
+        if (!chosen.includes(tIdx)) {
+          builderState[idx].push(tIdx);
+          renderBuilderPool(idx);
+        }
+      };
+      pool.appendChild(t);
+    });
+  }
+
+  function resetBuilder(idx) {
+    builderState[idx] = [];
+    document.getElementById(`bFb_${idx}`).textContent = '';
+    renderBuilderPool(idx);
+  }
+
+  function checkBuilder(idx) {
+    const built = builderState[idx].map(i => BUILDER_ITEMS[idx].tiles[i]).join(' ');
+    const fb = document.getElementById(`bFb_${idx}`);
+    if (built === BUILDER_ITEMS[idx].answer) {
+      fb.className = 'feedback-line fb-ok';
+      fb.textContent = '✅ Great sentence! "' + built + '"';
+      addPoints('builder_' + idx, 15);
+      speakText(built);
+    } else {
+      fb.className = 'feedback-line fb-err';
+      fb.textContent = 'Almost! Tap a word in the box to remove it and try a new order.';
+    }
+  }
+
+  // ==================== SLIDE 5: LISTENING & TRUE/FALSE ====================
+  const SOFIA_STORY = "Hi! My name is Sofia, and I'm eleven years old. I'm a new student at the London Youth Club. My hometown isn't London. It's Madrid, in Spain! I'm a little nervous today, but I'm very curious too. My neighbour Emma is super polite and friendly. Are we classmates at school? No, we aren't, but we are friends at the club. My mum is an architect, and my brother is a musician!";
+
+  const TF_ITEMS = [
+    { q: '1. Sofia is from London.', ans: false, exp: "False! Her hometown is Madrid, in Spain." },
+    { q: '2. Sofia is curious and a little nervous today.', ans: true, exp: "True! She is a little nervous, but very curious too." },
+    { q: '3. Sofia and Emma are classmates at school.', ans: false, exp: "False! They are neighbours and club friends, not classmates." },
+    { q: '4. Sofia’s mum is an architect.', ans: true, exp: "True! Her mum is an architect, and her brother is a musician." }
+  ];
+
+  function toggleStoryTranscript() {
+    const panel = document.getElementById('storyTranscript');
+    const btn = document.getElementById('toggleStoryBtn');
+    const isOpen = panel.classList.toggle('open');
+    btn.textContent = isOpen ? '🙈 Hide transcript' : '👁 Show transcript';
+  }
+
+  function initSlide5() {
+    const list = document.getElementById('tfList');
+    TF_ITEMS.forEach((item, idx) => {
+      const card = document.createElement('div');
+      card.className = 'q-card';
+      card.innerHTML = `
+        <div class="tf-row" style="border:none; padding:0;">
+          <span style="font-weight:600; font-size:15px;">${item.q}</span>
+          <div class="options-row">
+            <button class="opt-btn" id="tf_${idx}_t" onclick="checkTF(${idx}, true)">True</button>
+            <button class="opt-btn" id="tf_${idx}_f" onclick="checkTF(${idx}, false)">False</button>
+          </div>
+        </div>
+        <div class="feedback-line" id="tfFb_${idx}"></div>
+      `;
+      list.appendChild(card);
+    });
+  }
+
+  function checkTF(idx, choice) {
+    const item = TF_ITEMS[idx];
+    const tBtn = document.getElementById(`tf_${idx}_t`);
+    const fBtn = document.getElementById(`tf_${idx}_f`);
+    const fb = document.getElementById(`tfFb_${idx}`);
+
+    if (choice === item.ans) {
+      tBtn.disabled = true;
+      fBtn.disabled = true;
+      (choice ? tBtn : fBtn).classList.add('correct');
+      fb.className = 'feedback-line fb-ok';
+      fb.textContent = '✅ ' + item.exp;
+      addPoints('tf_' + idx, 10);
+    } else {
+      (choice ? tBtn : fBtn).classList.add('wrong');
+      fb.className = 'feedback-line fb-err';
+      fb.textContent = 'Listen or check the transcript and try again!';
+    }
+  }
+
+  // ==================== SLIDE 6: MOOD, FORMSPREE & CONFETTI ====================
+  const FORMSPREE_URL = "https://formspree.io/f/xqpqnvkk";
+  let selectedMoodText = "Not selected";
+  let resultsSent = false;
+
+  function selectMood(btn, label) {
+    document.querySelectorAll('#moodRow .mood-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    selectedMoodText = label || btn.textContent.trim();
+  }
+
+  async function finishHomework() {
+    addPoints('hw_complete', 20);
+    document.getElementById('finalScoreText').textContent = score;
+    document.getElementById('completeBanner').classList.add('show');
+    launchConfetti();
+
+    const statusEl = document.getElementById('sendStatus');
+    if (resultsSent) return;
+
+    const robotAnswers = ROBOT_ITEMS.map((_, idx) => {
+      const el = document.getElementById(`robotIn_${idx}`);
+      return `${idx + 1}) ${el && el.value.trim() ? el.value.trim() : '(empty)'}`;
+    }).join(' | ');
+
+    const profileSummary = [
+      `Name: ${document.getElementById('fName').value.trim() || '-'}`,
+      `Age: ${document.getElementById('fAge').value.trim() || '-'}`,
+      `Hometown: ${document.getElementById('fCity').value.trim() || '-'}`,
+      `2 Words: ${document.getElementById('fWords').value.trim() || '-'}`,
+      `Not today: ${document.getElementById('fNotToday').value.trim() || '-'}`,
+      `Classmate: ${document.getElementById('fFriend').value.trim() || '-'}`
+    ].join(' | ');
+
+    const payload = {
+      student: "Alina",
+      homework: "London Club Homework — TO BE (+ / - / ?)",
+      score: `${score} pts`,
+      mood: selectedMoodText,
+      robot_typing_answers: robotAnswers,
+      profile_keywords: profileSummary
+    };
+
+    if (statusEl) {
+      statusEl.textContent = "⏳ Sending your results to your teacher...";
+      statusEl.style.color = "var(--wine)";
+    }
+
+    try {
+      const response = await fetch(FORMSPREE_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (response.ok) {
+        resultsSent = true;
+        if (statusEl) {
+          statusEl.textContent = "✅ Your results were sent to your teacher!";
+          statusEl.style.color = "var(--green)";
+        }
+      } else {
+        if (statusEl) {
+          statusEl.textContent = "⚠️ Could not send automatically. Please take a screenshot of your score!";
+          statusEl.style.color = "var(--red)";
+        }
+      }
+    } catch (err) {
+      if (statusEl) {
+        statusEl.textContent = "⚠️ No internet connection. Please take a screenshot of your score!";
+        statusEl.style.color = "var(--red)";
+      }
+    }
+  }
+
+  function launchConfetti() {
+    const canvas = document.getElementById('confettiCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const colors = ['#5C1E2E', '#B8873A', '#3D6B52', '#E8C07D', '#D97B66'];
+    const pieces = Array.from({ length: 110 }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * -canvas.height * 0.5,
+      w: 7 + Math.random() * 6,
+      h: 10 + Math.random() * 6,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      vy: 2.5 + Math.random() * 3.5,
+      vx: (Math.random() - 0.5) * 2.5,
+      rot: Math.random() * 360,
+      vrot: (Math.random() - 0.5) * 8
+    }));
+
+    let frame = 0;
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      pieces.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.rot += p.vrot;
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate((p.rot * Math.PI) / 180);
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+        ctx.restore();
+      });
+      frame++;
+      if (frame < 160) requestAnimationFrame(draw);
+      else ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+    draw();
+  }
+
+  // ==================== INIT ====================
+  initDots();
+  initSlide1();
+  initSlide2();
+  initSlide3();
+  initSlide4();
+  initSlide5();
+  goToSlide(0);
+</script>
+</body>
+</html>
